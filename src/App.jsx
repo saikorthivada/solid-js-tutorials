@@ -1,24 +1,34 @@
 import logo from './logo.svg';
 import styles from './App.module.css';
 import { createSignal, For, Index } from 'solid-js';
-import { createStore } from 'solid-js/store';
+import { createStore, produce } from 'solid-js/store';
 
 function App() {
   const [users, setUsers] = createStore([]);
 
   const addAUser = () => {
-    setUsers([...users, {
-      id: users.length + 1,
-      name: `Sai ${users.length + 1}`,
-      isDeleted: false
-    }]);
+    // setUsers([...users, {
+    //   id: users.length + 1,
+    //   name: `Sai ${users.length + 1}`,
+    //   isDeleted: false
+    // }]);
+
+    setUsers(
+      produce((users) => {
+        users.push({
+          id: users.length + 1,
+          name: `Sai ${users.length + 1}`,
+          isDeleted: false
+        })
+        return users;
+      })
+    )
   }
 
   const deleteUserById = (id) => {
     setUsers(
       (user) => user.id === id,
-      "isDeleted",
-      true
+      produce((user) => user.isDeleted = true)
     );
   }
   return (
