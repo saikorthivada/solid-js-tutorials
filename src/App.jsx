@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import styles from './App.module.css';
 // import LazyComponent from './LazyComponent';
-import { createSignal, lazy } from 'solid-js';
+import { createSignal, lazy, Suspense } from 'solid-js';
 
 const LazyComponent = lazy(() => import('./LazyComponent'));
 function App() {
@@ -9,9 +9,12 @@ function App() {
   return (
     <div class={styles.App}>
       {
-        count() % 2 === 0 && <LazyComponent />
+        count() % 2 === 0 &&
+        <Suspense fallback={() => <p>Loading component</p>}>
+          <LazyComponent />
+          </Suspense>
       }
-      
+
       <button onclick={() => setCount(() => count() + 1)}>Update count</button>
     </div>
   );
